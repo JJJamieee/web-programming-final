@@ -33,29 +33,41 @@ function App() {
               setHasWon(false)
               setStatus('')
               setNumber('')
+              setHasStarted(false)
             }}
           >
             restart
           </button>
         </>
       ) : (
-        <>
-          <p>Guess a number between 1 to 100</p>
-          <input
-            value={number}
-            onChange={(e) => setNumber(e.target.value)}
-          ></input>
-          <button
-            // TODO: use async/await to call guess(number),
-            // process the response to set the proper state values
-            onClick={}
-            disabled={!number}
-          >
-            guess!
+          <>
+            <p>Guess a number between 1 to 100</p>
+            <input
+              value={number}
+              onChange={(e) => setNumber(e.target.value)}
+            ></input>
+            <button
+              // TODO: use async/await to call guess(number),
+              // process the response to set the proper state values
+              onClick={async () => {
+                const msg = await guess(number)
+
+                if (msg === 'Got it right!') {
+                  // setStatus('You got it right!')
+                  setHasWon(true)
+                } else if (msg === 'Higher!') {
+                  setStatus('Higher')
+                } else if (msg === 'Lower!') {
+                  setStatus('Lower')
+                }
+              }}
+              disabled={!number}
+            >
+              guess!
           </button>
-          <p>{status}</p>
-        </>
-      )}
+            <p>{status}</p>
+          </>
+        )}
     </div>
   )
 
