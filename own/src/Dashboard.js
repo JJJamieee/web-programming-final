@@ -412,6 +412,7 @@ export default function Dashboard() {
     const handleLogout = (logout) => {
         setIsLogin(!logout)
         handleBackHome()
+        setPassword("")
     }
 
     return (

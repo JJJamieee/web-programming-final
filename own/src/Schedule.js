@@ -9,7 +9,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 import { ArrowRight } from '@material-ui/icons';
+import SortSchedule from './SortSchedule'
 
 const useStyles = makeStyles({
     table: {
@@ -17,6 +19,9 @@ const useStyles = makeStyles({
     },
     next_button: {
         float: 'right',
+    },
+    title: {
+        flexGrow: 1,
     },
 });
 
@@ -31,21 +36,42 @@ const rows = [
 ];
 
 export default function Schedule(props) {
-    const [curPage, setCurPage] = useState();
+    const [curPage, setCurPage] = useState(0);
+    const [pageNum, setPageNum] = useState(0);
+    const [sortDateList, setSortDateList] = useState([])
     const classes = useStyles();
 
-    const dayList = []
-    props.cupSchedule.map((row) => (
-        dayList.push(row.date)
-    ))
-    const daySet = new Set(dayList);
-    console.log(daySet)
+    useEffect(() => {
+        if (!sortDateList.length) {
+            const dayList = []
+            props.cupSchedule.map((row) => (
+                dayList.push(row.date.slice(0, 10))
+            ))
+            const daySet = new Set(dayList);
+            const uniDateList = Array.from(daySet)
+            setPageNum(uniDateList.length)
+            setSortDateList(SortSchedule(uniDateList))
+        }
+    })
+
+    const handlePreviost = () => {
+        if (curPage > 0)
+            setCurPage((curPage) => curPage - 1)
+    }
+
+    const handleNext = () => {
+        if (curPage < pageNum - 1)
+            setCurPage((curPage) => curPage + 1)
+    }
 
     return (
         <div>
             <h2>賽程</h2>
-            <Button color="primary">Previous</Button>
-            <Button className={classes.next_button} color="primary">Next</Button>
+            <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title} style={{ textAlign: "center" }}>
+                {sortDateList[curPage]}
+            </Typography>
+            <Button color="primary" onClick={handlePreviost}>Previous</Button>
+            <Button className={classes.next_button} color="primary" onClick={handleNext}>Next</Button>
             <TableContainer component={Paper}>
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead>
@@ -57,19 +83,22 @@ export default function Schedule(props) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {props.cupSchedule.map((row) => (
-                            <TableRow key={row.date}>
-                                <TableCell component="th" scope="row">
-                                    {row.date.slice(0, 10)}
-                                </TableCell>
-                                <TableCell align="right">{row.time}</TableCell>
-                                <TableCell align="right">{row.match}</TableCell>
-                                <TableCell align="right">{row.place}</TableCell>
-                            </TableRow>
+                        {props.cupSchedule.map((row, index) => (
+                            row.date.slice(0, 10) === sortDateList[curPage] ?
+                                <TableRow key={index}>
+                                    <TableCell component="th" scope="row">
+                                        {row.date.slice(0, 10)}
+                                    </TableCell>
+                                    <TableCell align="right">{row.time}</TableCell>
+                                    <TableCell align="right">{row.match}</TableCell>
+                                    <TableCell align="right">{row.place}</TableCell>
+                                </TableRow>
+                                :
+                                <React.Fragment></React.Fragment>
                         ))}
                     </TableBody>
                 </Table>
             </TableContainer>
-        </div>
+        </div >
     );
 }
