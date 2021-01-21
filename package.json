@@ -23,7 +23,7 @@
     "yarn": "^1.22.10"
   },
   "scripts": {
-    "start": "npm run server",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
     "server": "node ./server/server.js",
     "client": "react-scripts start",
     "build": "react-scripts build",
