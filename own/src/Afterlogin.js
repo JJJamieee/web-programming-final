@@ -292,6 +292,9 @@ export default function Afterlogin(props) {
                     <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
                         NTU Sports
                     </Typography>
+                    <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title} style={{position: "absolute", left: "650px"}}>
+                        Welcome, {props.userName}!
+                    </Typography>
                     <IconButton color="inherit">
                         {page === 3 ?
                             <Button
