@@ -4,7 +4,7 @@ Group 51 : NTU Sports
 
 ## Demo影片連結
 ```
-
+https://youtu.be/jqH7nEp_taA
 ```
 
 ## 服務說明
@@ -24,7 +24,7 @@ Group 51 : NTU Sports
 
 ## Github link
 ```
-
+https://github.com/JJJamieee/web-programming-final/tree/heroku
 ```
 
 ## 使用與參考之框架/模組/原始碼
