@@ -1,8 +1,13 @@
-import express from 'express'
-import Cup from '../models/Cup'
-import Schedule from '../models/Schedule'
-import Announce from '../models/Announce'
-import User from '../models/user'
+// import express from 'express'
+// import Cup from '../models/Cup'
+// import Schedule from '../models/Schedule'
+// import Announce from '../models/Announce'
+// import User from '../models/user'
+const express = require('express')
+const Cup = require('../models/Cup')
+const Schedule = require('../models/Schedule')
+const Announce = require('../models/Announce')
+const User = require('../models/user')
 const bcrypt = require('bcryptjs')
 
 const router = express.Router()
