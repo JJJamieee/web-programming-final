@@ -48,3 +48,10 @@ db.once('open', () => {
 app.listen(port, () => {
   console.log(`Server is up on port ${port}.`)
 })
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+}
+app.get('*', (request, response) => {
+  response.sendFile(path.join(__dirname, 'client/build', 'index.js'));
+});
