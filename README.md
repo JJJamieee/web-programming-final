@@ -1,55 +1,44 @@
-# hw5_guessing_game
+# [109-1] Web Programming Final
 
-Implement a simple server-side guessing game
+Group 51 : NTU Sports
 
-## Get started
-
-0. Click on this [link](https://classroom.github.com/a/7rsWZUZ3) to access the reference code from GitHub classroom.
-```
-https://classroom.github.com/a/7rsWZUZ3
+## Demo影片連結
 ```
 
-1. Change directory to "own"
-```
-cd own
 ```
 
-2. Now in "own" directory, you first install React related files by the following command:
-```
-yarn
-```
+## 服務說明
 
-3. Test if client (React) is installed correctly by:
-```
-yarn start
-```
+這是一個可以管理、查看台大體育賽事的網站，有註冊登入與訪客系統，管理者可以註冊登入來創建、修改比賽，而訪客則可以查看現有的比賽資料，包含：項目、日期、時間、地點...等等，另外還有公告系統，管理者可以發布公告，讓訪客可以瀏覽。
 
-You should see a guesing game window with a "start game" button
+## 使用/操作說明
 
-4. The server can be started by the command:
-```
-yarn server
+* 管理者   
+用帳號密碼註冊、登入之後可以選擇要創建比賽或是修改比賽，選完後就可以利用填表單的方式建立或修改，前端會把內容記錄下來傳入後端並寫進資料庫，並顯示在前端，另外管理者可以新增公告以供瀏覽。
+* 訪客    
+不需要註冊登入即可瀏覽已建立的比賽資料與查看由管理者所新增的公告。
+
+## Github link
 ```
 
-However, since the server code is not yet finished, you won't be able to play the game.
+```
 
-5. Now you can start coding. All the TODOs are specified by the commented "TODO". You should be able to finish the project by implementing these TODOs.
+## 使用與參考之框架/模組/原始碼
 
-## Homework Deadline
+* Frontend : React、Material-UI、react-router-dom
+* Backend : Node.js、Mongoose、dotenv、express、nodemon、bcrypt
+* Database : MongoDB
 
-9pm, Monday, 11/30, 2020.
+## 專題製作心得
 
-## Homework Review
+## 各組員之貢獻
+* 楊鈞智 : 我主要是負責前端的註冊、登入頁面的設計與建立、修改比賽資料的表單呈現，並把表單的內容存下來，另外負責撰寫後端資料庫資料models的格式。  
+* 康崴 :    
+* 林佳勳 :     
 
-If you submit homework in time, you should receive 2 other students' homework for review within 24 hours. Please folloing the instruction and fill in your review in this Google form: https://forms.gle/5WJtgrF6wCrmPpee7
 
-Review deadline is: 9pm, Monday, 12/07, 2020.
+## Deployed連結
+```
 
-After the deadline of homework review, TA will push others' review back to your repo within 1 week.
-
-## Contact TA and Ric
-
-If you have any question regarding to this homework or this class, please e-mail to: eewebprogramming@googlegroups.com.
-
-You are also welcome to raise the homework related questions on FB group.
+```
 
