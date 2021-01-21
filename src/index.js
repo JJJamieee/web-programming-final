@@ -7,7 +7,11 @@ import Afterlogin from './Afterlogin'
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
-  <App />,
+  <React.Fragment>
+    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'" />
+    <App />
+  </React.Fragment>
+  ,
   document.getElementById('root')
 )
 
