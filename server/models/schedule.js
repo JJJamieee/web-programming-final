@@ -1,4 +1,5 @@
-import mongoose from 'mongoose'
+// import mongoose from 'mongoose'
+const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
@@ -18,4 +19,5 @@ const ScheduleSchema = Schema({
 
 const exportSchema = mongoose.model('Schedule', ScheduleSchema)
 
-export default exportSchema
+// export default exportSchema
+module.exports = exportSchema

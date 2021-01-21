@@ -1,4 +1,5 @@
-import mongoose from 'mongoose'
+// import mongoose from 'mongoose'
+const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
@@ -14,4 +15,5 @@ const AnnounceSchema = Schema({
 
 const exportSchema = mongoose.model('Announce', AnnounceSchema)
 
-export default exportSchema
+// export default exportSchema
+module.exports = exportSchema
