@@ -267,10 +267,15 @@ export default function Afterlogin(props) {
     const handleFunction = (func) => {
         setFuncNum(func)
         setPage(3)
+        console.log(func)
     }
 
     const handleBackToOpiton = () => {
         setPage(2)
+    }
+
+    const handleBackToCups = () => {
+        setPage(1)
     }
 
     const handleLogout = () => {
@@ -295,9 +300,18 @@ export default function Afterlogin(props) {
                                 onClick={handleBackToOpiton}
                             >
                                 Back to Option
-                        </Button>
+                            </Button>
                             :
-                            <div></div>
+                            (page === 2 ?
+                                <Button
+                                    className={classes.margin}
+                                    color="inherit"
+                                    onClick={handleBackToCups}
+                                >
+                                    Back to Cups
+                            </Button>
+                                :
+                                <div></div>)
                         }
 
                         <Button

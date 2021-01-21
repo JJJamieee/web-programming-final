@@ -41,6 +41,7 @@ export default function Schedule(props) {
     const [changePage, setChagePage] = useState(false)
     const [cupSchedule, setCupSchedule] = useState([])
     const classes = useStyles();
+
     const handleEdit = (gameInstance) => {
         setChagePage(true)
         setGame(gameInstance)
@@ -51,6 +52,10 @@ export default function Schedule(props) {
         const { data: schedule } = await instance.get('/getSchedule', { params: { id } })
 
         setCupSchedule(schedule.contents)
+    }
+
+    const backToSchedule = () => {
+        setChagePage(false)
     }
 
     useEffect(() => {
@@ -94,7 +99,7 @@ export default function Schedule(props) {
                     </TableContainer>
                 </React.Fragment>
                 :
-                <EditGame game={game} cupNum={props.cupNum} />}
+                <EditGame game={game} cupNum={props.cupNum} backToSchedule={backToSchedule} />}
         </div>
     );
 }

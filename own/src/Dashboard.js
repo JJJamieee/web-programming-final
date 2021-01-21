@@ -306,7 +306,7 @@ export default function Dashboard() {
     const getCupsList = async () => {
         // TODO : get cups list
         const { data: all_cups } = await instance.get('/getAllCups')
-        console.log(all_cups.contents[0]._id)
+
         setCupsList(all_cups.contents)
     }
 
@@ -362,7 +362,12 @@ export default function Dashboard() {
             'hashedPassword': password,
         })
 
-        setIsLogin(isLoginBackEnd)
+        if (isLoginBackEnd.isLogin)
+            setIsLogin(isLoginBackEnd.isLogin)
+        else {
+            alert("密碼錯誤或使用者不存在")
+            setPassword("")
+        }
     }
 
     useEffect(() => {

@@ -64,6 +64,13 @@ export default function AnnounceForm(props) {
       'date': transDate,
       'content': announceContent
     })
+
+    setAnnounceContent("")
+    setAnnounceDate("")
+    setAnnounceMonth("")
+    setAnnounceYear("")
+    setAnnounceTitle("")
+    alert("新增公告成功！")
   }
 
   return (

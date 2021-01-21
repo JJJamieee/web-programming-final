@@ -48,6 +48,14 @@ export default function CreateGame(props) {
             'score': " ",
             'result': " "
         })
+
+        setGameYear("")
+        setGameMonth("")
+        setGameDate("")
+        setGameTime("")
+        setGameMatch("")
+        setGamePlace("")
+        alert("新增比賽成功！")
     }
 
     return (

@@ -60,6 +60,8 @@ export default function EditGame(props) {
             'score': gamePoint,
             'result': gameWinner
         })
+
+        props.backToSchedule(2)
     }
 
     return (
