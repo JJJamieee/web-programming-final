@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import routes from './routes/cups'
+// import routes from './routes/cups'
 import mongoose from 'mongoose'
 import cupsRoute from './routes/cups'
 
@@ -39,7 +39,7 @@ db.once('open', () => {
   console.log('MongoDB connected!')
 })
 
-routes(app)
+cupsRoute(app)
 
 app.listen(port, () => {
   console.log(`Server is up on port ${port}.`)
