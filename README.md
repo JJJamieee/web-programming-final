@@ -24,7 +24,7 @@ https://youtu.be/jqH7nEp_taA
 
 ## Github link
 ```
-https://github.com/JJJamieee/web-programming-final/tree/heroku
+https://github.com/JJJamieee/web-programming-final
 ```
 
 ## 使用與參考之框架/模組/原始碼
