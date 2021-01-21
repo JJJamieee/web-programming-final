@@ -409,8 +409,9 @@ export default function Dashboard() {
         getAllData(cur)
     }
 
-    const handleHomeButton = () => {
-        setPage(3)
+    const handleHomeButton = (butNum) => {
+        if (butNum === 1)
+            setPage(3)
     }
 
     const handleBackHome = () => {
@@ -576,7 +577,7 @@ export default function Dashboard() {
                                             </Grid>
                                             <Grid item xs={12} md={9} lg={12}>
                                                 <div className={fixedHeightPaper}>
-                                                    {images.map((image) => (
+                                                    {images.map((image, index) => (
                                                         <ButtonBase
                                                             focusRipple
                                                             key={image.title}
@@ -587,7 +588,7 @@ export default function Dashboard() {
                                                                 height: image.height,
                                                                 margin: image.margin,
                                                             }}
-                                                            onClick={handleHomeButton}
+                                                            onClick={() => handleHomeButton(index + 1)}
                                                         >
                                                             <span
                                                                 className={classes.imageSrc}
