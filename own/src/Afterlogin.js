@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react'
+import axios from 'axios'
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -17,6 +18,13 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import CreateGame from './CreateGame'
 import Editschedule from './Editschedule'
+import AnnounceForm from './AnnounceForm'
+import { Button } from '@material-ui/core';
+
+const API_ROOT = 'http://localhost:4000/api'
+const instance = axios.create({
+    baseURL: API_ROOT
+})
 
 
 const images = [
@@ -238,7 +246,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Afterlogin() {
+export default function Afterlogin(props) {
     const classes = useStyles();
     const [open, setOpen] = useState(true);
     const [page, setPage] = useState(1);
@@ -246,6 +254,10 @@ export default function Afterlogin() {
     const [funcNum, setFuncNum] = useState(1);
 
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight, classes.root);
+
+    const userLogout = async () => {
+        const { data: success } = await instance.post('/setUserLogout', { userName: props.userName })
+    }
 
     const handleCupNum = (num) => {
         setCupNum(num)
@@ -257,6 +269,16 @@ export default function Afterlogin() {
         setPage(3)
     }
 
+    const handleBackToOpiton = () => {
+        setPage(2)
+    }
+
+    const handleLogout = () => {
+        userLogout()
+        setPage(1)
+        props.logout(true)
+    }
+
     return (
         <div className={classes.root}>
             <CssBaseline />
@@ -266,9 +288,25 @@ export default function Afterlogin() {
                         NTU Sports
                     </Typography>
                     <IconButton color="inherit">
-                        <Badge badgeContent={4} color="secondary">
-                            <NotificationsIcon />
-                        </Badge>
+                        {page === 3 ?
+                            <Button
+                                className={classes.margin}
+                                color="inherit"
+                                onClick={handleBackToOpiton}
+                            >
+                                Back to Option
+                        </Button>
+                            :
+                            <div></div>
+                        }
+
+                        <Button
+                            className={classes.margin}
+                            color="inherit"
+                            onClick={handleLogout}
+                        >
+                            Logout
+                        </Button>
                     </IconButton>
                 </Toolbar>
             </AppBar>
@@ -365,7 +403,11 @@ export default function Afterlogin() {
                                         {funcNum == 1 ?
                                             <CreateGame cupNum={cupNum} />
                                             :
-                                            <Editschedule cupNum={cupNum} />
+                                            (funcNum == 2 ?
+                                                <Editschedule cupNum={cupNum} />
+                                                :
+                                                <AnnounceForm cupNum={cupNum} />
+                                            )
                                         }
                                     </Paper>
                                 )}

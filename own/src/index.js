@@ -4,11 +4,11 @@ import './index.css'
 import App from './App'
 import Dashboard from './Dashboard'
 import Afterlogin from './Afterlogin'
+import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Dashboard />
-  </React.StrictMode>,
+  <App />,
   document.getElementById('root')
 )
 
+serviceWorker.unregister();

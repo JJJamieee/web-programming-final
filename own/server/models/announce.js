@@ -3,9 +3,9 @@ import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 
 const AnnounceSchema = Schema({
-  cupID: { type: Number, required: true, unique: true },
+  cupID: { type: Number, required: true },
   title: { type: String, required: true },
-  date: { type: String, required: true }, //日期
+  date: { type: Date, required: true }, //日期
   content: { type: String, required: true }
 }, {
   collection: 'Announce',

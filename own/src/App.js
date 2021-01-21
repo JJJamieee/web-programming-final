@@ -1,77 +1,21 @@
-import { useState } from 'react'
-import './App.css'
-import { guess, startGame, restart } from './axios'
+import React, { Component } from 'react'
+import { NavLink, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter } from 'react-router-dom'
 
-function App() {
-  const [hasStarted, setHasStarted] = useState(false)
-  const [hasWon, setHasWon] = useState(false)
-  const [number, setNumber] = useState('')
-  const [status, setStatus] = useState('')
+import Dashboard from './Dashboard'
+import Signup from './Signup_front'
+import SignIn from './LogInF'
 
-  const startMenu = (
-    <div>
-      <button
-        onClick={async () => {
-          await startGame()
-          setHasStarted(true)
-        }}
-      >
-        start game
-      </button>
-    </div>
-  )
 
-  const game = (
-    <div>
-      {hasWon ? (
-        <>
-          <p>you won! the number was {number}.</p>
-          <button
-            onClick={async () => {
-              await restart()
-
-              setHasWon(false)
-              setStatus('')
-              setNumber('')
-              setHasStarted(false)
-            }}
-          >
-            restart
-          </button>
-        </>
-      ) : (
-          <>
-            <p>Guess a number between 1 to 100</p>
-            <input
-              value={number}
-              onChange={(e) => setNumber(e.target.value)}
-            ></input>
-            <button
-              // TODO: use async/await to call guess(number),
-              // process the response to set the proper state values
-              onClick={async () => {
-                const msg = await guess(number)
-
-                if (msg === 'Got it right!') {
-                  // setStatus('You got it right!')
-                  setHasWon(true)
-                } else if (msg === 'Higher!') {
-                  setStatus('Higher')
-                } else if (msg === 'Lower!') {
-                  setStatus('Lower')
-                }
-              }}
-              disabled={!number}
-            >
-              guess!
-          </button>
-            <p>{status}</p>
-          </>
-        )}
-    </div>
-  )
-
-  return <div className="App">{hasStarted ? game : startMenu}</div>
+class App extends Component {
+	render() {
+		return (
+			// <BrowserRouter basename="/my-app">
+			<BrowserRouter>
+				<Dashboard />
+			</BrowserRouter>
+		)
+	}
 }
 
 export default App

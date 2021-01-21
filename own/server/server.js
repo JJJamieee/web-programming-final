@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import routes from './routes'
 import mongoose from 'mongoose'
+import cupsRoute from './routes/cups'
 
 require('dotenv').config()
 const app = express()
@@ -16,6 +17,7 @@ app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Credentials', 'true')
   next()
 })
+app.use('/api', cupsRoute)
 
 const port = process.env.PORT || 4000
 const dboptions = {

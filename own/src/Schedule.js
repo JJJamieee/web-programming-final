@@ -60,7 +60,7 @@ export default function Schedule(props) {
                         {props.cupSchedule.map((row) => (
                             <TableRow key={row.date}>
                                 <TableCell component="th" scope="row">
-                                    {row.date}
+                                    {row.date.slice(0, 10)}
                                 </TableCell>
                                 <TableCell align="right">{row.time}</TableCell>
                                 <TableCell align="right">{row.match}</TableCell>

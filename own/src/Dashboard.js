@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink, Switch, Route, Redirect } from "react-router-dom";
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 import clsx from 'clsx';
@@ -24,17 +25,18 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
 import Title from './Title';
 import { Button } from '@material-ui/core';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import TextField from '@material-ui/core/TextField';
+import FormControl from '@material-ui/core/FormControl';
 import BasicInfo from './BasicInfo'
 import GameResult from './GameResult'
 import Announce from './Announce'
 import Schedule from './Schedule'
+import Afterlogin from './Afterlogin'
+import SignIn from './LogInF'
+import SignUp from './SignUp'
 import Cups from './Cups'
 
 const API_ROOT = 'http://localhost:4000/api'
@@ -173,7 +175,13 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
     },
     fixedHeight: {
-        height: 240,
+        height: 400,
+    },
+    root: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        minWidth: 300,
+        width: '100%',
     },
     image: {
         position: 'relative',
@@ -239,6 +247,24 @@ const useStyles = makeStyles((theme) => ({
         left: 'calc(50% - 9px)',
         transition: theme.transitions.create('opacity'),
     },
+    stepper: {
+        padding: theme.spacing(3, 0, 5),
+    },
+    buttons: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+    },
+    button: {
+        marginTop: theme.spacing(3),
+        marginLeft: theme.spacing(1),
+    },
+    formControl: {
+        margin: theme.spacing(1),
+        width: '100%'
+    },
+    selectEmpty: {
+        marginTop: theme.spacing(2),
+    },
 }));
 
 export default function Dashboard() {
@@ -246,11 +272,20 @@ export default function Dashboard() {
     const [open, setOpen] = useState(true);
     const [matchOption, setMatchOption] = useState(1);
     const [page, setPage] = useState(2);
-    // const [cupsList, setCupsList] = useState([]);
+    const [cupsList, setCupsList] = useState([]);
     const [cupBasicInfo, setCupBasicInfo] = useState([]);
     const [cupSchedule, setCupSchedule] = useState([]);
     const [cupResult, setCupResult] = useState([]);
     const [cupAnnounce, setCupAnnounce] = useState([]);
+    const [toSignUp, setToSignUp] = useState(false)
+    const [toSignIn, setToSignIn] = useState(false)
+    const [signUpEmail, setSignUpEmail] = useState("")
+    const [signUpUsername, setSignUpUsername] = useState("")
+    const [signUpPassword, setSignUpPassword] = useState("")
+    const [username, setUsername] = useState("")
+    const [password, setPassword] = useState("")
+    const [isLogin, setIsLogin] = useState(false)
+
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -268,12 +303,12 @@ export default function Dashboard() {
         }
     }
 
-    // const getCupsList = async () => {
-    //     // TODO : get cups list
-    //     const { data: all_cups } = await instance.get('/getAllCups')
-
-    //     setCupsList(all_cups.contents)
-    // }
+    const getCupsList = async () => {
+        // TODO : get cups list
+        const { data: all_cups } = await instance.get('/getAllCups')
+        console.log(all_cups.contents[0]._id)
+        setCupsList(all_cups.contents)
+    }
 
     const getBasicInfo = async (id) => {
         // TODO : get current cup basic info
@@ -303,13 +338,40 @@ export default function Dashboard() {
         setCupAnnounce(announce.contents)
     }
 
-    // useEffect(() => {
-    //     if (!cupsList.length)
-    //         getCupsList()
-    // })
+    const addUser = async (event) => {
+        event.preventDefault();
+
+        const { data: success } = await instance.post('/signup', {
+            'userName': signUpUsername,
+            'hashedPassword': signUpPassword,
+            'email': signUpEmail,
+            'isLogin': false
+        })
+
+        if (success) {
+            setToSignUp(false)
+            setToSignIn(true)
+        }
+    }
+
+    const handleLogin = async (event) => {
+        event.preventDefault();
+
+        const { data: isLoginBackEnd } = await instance.post('/login', {
+            'userName': username,
+            'hashedPassword': password,
+        })
+
+        setIsLogin(isLoginBackEnd)
+    }
+
+    useEffect(() => {
+        if (!cupsList.length)
+            getCupsList()
+    })
 
     const getAllData = (id) => {
-        // getCupsList()
+        getCupsList()
         getBasicInfo(id)
         getSchedule(id)
         getResult(id)
@@ -328,229 +390,408 @@ export default function Dashboard() {
     const handleBackHome = () => {
         setPage(2)
         setMatchOption(1)
+        setToSignUp(false)
+        setToSignIn(false)
+    }
+
+    const handleSignUp = () => {
+        setToSignUp(true)
+        setToSignIn(false)
+    }
+
+    const handleSignIn = () => {
+        setToSignIn(true)
+        setToSignUp(false)
+    }
+
+    const handleLogout = (logout) => {
+        setIsLogin(!logout)
+        handleBackHome()
     }
 
     return (
-        <div className={classes.root}>
-            <CssBaseline />
-            {page != 1 ?
-                <AppBar position="absolute" className={clsx(classes.appBar)}>
-                    <Toolbar className={classes.toolbar}>
-                        <IconButton
-                            edge="start"
-                            color="inherit"
-                            aria-label="open drawer"
-                            onClick={handleDrawerOpen}
-                            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                            <Button onClick={handleBackHome} color="inherit" className={classes.title}>NTU Sports</Button>
-                        </Typography>
-                        <IconButton color="inherit">
-                            <Badge badgeContent={4} color="secondary">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton>
-                    </Toolbar>
-                </AppBar>
+        <React.Fragment>
+            <Switch>
+                <Route exact path="/controlPage" component={Afterlogin} />
+            </Switch>
+            {isLogin ?
+                <Afterlogin logout={(isLogout) => handleLogout(isLogout)} userName={username} />
                 :
-                <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
-                    <Toolbar className={classes.toolbar}>
-                        <IconButton
-                            edge="start"
-                            color="inherit"
-                            aria-label="open drawer"
-                            onClick={handleDrawerOpen}
-                            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-
-                        <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                            <Button onClick={handleBackHome} color="inherit" className={classes.title}>NTU Sports</Button>
-                        </Typography>
-
-                        <IconButton color="inherit">
-                            <Badge badgeContent={4} color="secondary">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton>
-                    </Toolbar>
-                </AppBar>
-            }
-
-            {
-                page != 1 ?
-                    <React.Fragment></React.Fragment>
-                    :
-                    <Drawer
-                        variant="permanent"
-                        classes={{
-                            paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-                        }}
-                        open={open}
-                    >
-                        <div className={classes.toolbarIcon}>
-                            <IconButton onClick={handleDrawerClose}>
-                                <ChevronLeftIcon />
-                            </IconButton>
-                        </div>
-                        <Divider />
-                        <List>
-                            <ListItem button onClick={() => handleListButton(1)}>
-                                <ListItemIcon>
-                                    <DashboardIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="基本資訊" />
-                            </ListItem>
-                            <ListItem button onClick={() => handleListButton(2)}>
-                                <ListItemIcon>
-                                    <DashboardIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="賽程" />
-                            </ListItem>
-                            <ListItem button onClick={() => handleListButton(3)}>
-                                <ListItemIcon>
-                                    <DashboardIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="比賽結果" />
-                            </ListItem>
-                            <ListItem button onClick={() => handleListButton(4)}>
-                                <ListItemIcon>
-                                    <DashboardIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="公告" />
-                            </ListItem>
-                            <ListItem button onClick={() => handleListButton(5)}>
-                                <ListItemIcon>
-                                    <DashboardIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="返回盃賽列表" />
-                            </ListItem>
-                        </List>
-                    </Drawer>
-            }
-            <main className={classes.content}>
-                <div className={classes.appBarSpacer} />
-                {page == 2 ?
-                    <Container maxWidth="lg" className={classes.container}>
-                        <Grid container spacing={3}>
-                            <Grid item xs={12} md={9} lg={12}>
-                                <Paper style={{ height: "45px", textAlign: "center" }}>
-                                    <h1>Sports</h1>
-                                </Paper>
-                            </Grid>
-                            <Grid item xs={12} md={9} lg={12}>
-                                <Paper className={fixedHeightPaper}>
-                                    {images.map((image) => (
-                                        <ButtonBase
-                                            focusRipple
-                                            key={image.title}
-                                            className={classes.image}
-                                            focusVisibleClassName={classes.focusVisible}
-                                            style={{
-                                                width: image.width,
-                                                height: image.height,
-                                                margin: image.margin,
-                                            }}
-                                            onClick={handleHomeButton}
-                                        >
-                                            <span
-                                                className={classes.imageSrc}
-                                                style={{
-                                                    backgroundImage: `url(${image.url})`,
-                                                }}
-                                            />
-                                            <span className={classes.imageBackdrop} />
-                                            <span className={classes.imageButton}>
-                                                <Typography
-                                                    component="span"
-                                                    variant="subtitle1"
-                                                    color="inherit"
-                                                    className={classes.imageTitle}
-                                                >
-                                                    {image.title}
-                                                    <span className={classes.imageMarked} />
-                                                </Typography>
-                                            </span>
-                                        </ButtonBase>
-                                    ))}
-                                </Paper>
-                            </Grid>
-                        </Grid>
-                    </Container>
-                    :
-                    (page == 3 ?
-                        <Container maxWidth="lg" className={classes.container}>
-                            <Grid container spacing={3}>
-                                <Grid item xs={12} md={9} lg={12}>
-                                    <Title>項目</Title>
-                                    <div className={fixedHeightPaper} style={{ width: "1240px", margin: "auto", marginTop: "100px" }}>
-                                        {images2.map((image, index) => (
-                                            <ButtonBase
-                                                focusRipple
-                                                key={image.title}
-                                                className={classes.image}
-                                                focusVisibleClassName={classes.focusVisible}
-                                                onClick={() => handleCupNum(index + 1)}
-                                                style={{
-                                                    width: image.width,
-                                                    height: image.height,
-                                                    margin: image.margin,
-                                                    //marginTop: image.marginTop,
-                                                }}
-                                            >
-                                                <span
-                                                    className={classes.imageSrc}
-                                                    style={{
-                                                        backgroundImage: `url(${image.url})`,
-                                                    }}
-                                                />
-                                                <span className={classes.imageBackdrop} />
-                                                <span className={classes.imageButton}>
-                                                    <Typography
-                                                        component="span"
-                                                        variant="subtitle1"
-                                                        color="inherit"
-                                                        className={classes.imageTitle}
-                                                    >
-                                                        {image.title}
-                                                        <span className={classes.imageMarked} />
-                                                    </Typography>
-                                                </span>
-                                            </ButtonBase>
-                                        ))}
-                                    </div>
-                                </Grid>
-                            </Grid>
-                        </Container>
+                <div className={classes.root}>
+                    <CssBaseline />
+                    {page != 1 ?
+                        <AppBar position="absolute" className={clsx(classes.appBar)}>
+                            <Toolbar className={classes.toolbar}>
+                                <IconButton
+                                    edge="start"
+                                    color="inherit"
+                                    aria-label="open drawer"
+                                    onClick={handleDrawerOpen}
+                                    className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+                                >
+                                    <MenuIcon />
+                                </IconButton>
+                                <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+                                    <Button onClick={handleBackHome} color="inherit" className={classes.title}>NTU Sports</Button>
+                                </Typography>
+                                <Button
+                                    className={classes.margin}
+                                    color="inherit"
+                                    onClick={handleSignUp}
+                                >
+                                    Sign Up
+                        </Button>
+                                <Button
+                                    className={classes.margin}
+                                    color="inherit"
+                                    onClick={handleSignIn}
+                                >
+                                    Login
+                        </Button>
+                            </Toolbar>
+                        </AppBar>
                         :
-                        <Container maxWidth="lg" className={classes.container}>
-                            <Grid container spacing={3}>
-                                {matchOption == 4 ?
-                                    <Announce cupAnnounce={cupAnnounce} />
+                        <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
+                            <Toolbar className={classes.toolbar}>
+                                <IconButton
+                                    edge="start"
+                                    color="inherit"
+                                    aria-label="open drawer"
+                                    onClick={handleDrawerOpen}
+                                    className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+                                >
+                                    <MenuIcon />
+                                </IconButton>
+
+                                <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+                                    <Button onClick={handleBackHome} color="inherit" className={classes.title}>NTU Sports</Button>
+                                </Typography>
+                                <Button
+                                    className={classes.margin}
+                                    color="inherit"
+                                    onClick={handleSignUp}
+                                >
+                                    Sign Up
+                        </Button>
+                                <Button
+                                    className={classes.margin}
+                                    color="inherit"
+                                    onClick={handleSignIn}
+                                >
+                                    Login
+                        </Button>
+                            </Toolbar>
+                        </AppBar>
+                    }
+
+                    {
+                        page != 1 ?
+                            <React.Fragment></React.Fragment>
+                            :
+                            <Drawer
+                                variant="permanent"
+                                classes={{
+                                    paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+                                }}
+                                open={open}
+                            >
+                                <div className={classes.toolbarIcon}>
+                                    <IconButton onClick={handleDrawerClose}>
+                                        <ChevronLeftIcon />
+                                    </IconButton>
+                                </div>
+                                <Divider />
+                                <List>
+                                    <ListItem button onClick={() => handleListButton(1)}>
+                                        <ListItemIcon>
+                                            <DashboardIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary="基本資訊" />
+                                    </ListItem>
+                                    <ListItem button onClick={() => handleListButton(2)}>
+                                        <ListItemIcon>
+                                            <DashboardIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary="賽程" />
+                                    </ListItem>
+                                    <ListItem button onClick={() => handleListButton(3)}>
+                                        <ListItemIcon>
+                                            <DashboardIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary="比賽結果" />
+                                    </ListItem>
+                                    <ListItem button onClick={() => handleListButton(4)}>
+                                        <ListItemIcon>
+                                            <DashboardIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary="公告" />
+                                    </ListItem>
+                                    <ListItem button onClick={() => handleListButton(5)}>
+                                        <ListItemIcon>
+                                            <DashboardIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary="返回盃賽列表" />
+                                    </ListItem>
+                                </List>
+                            </Drawer>
+                    }
+                    <main className={classes.content}>
+                        <div className={classes.appBarSpacer} />
+                        {!toSignUp ?
+                            !toSignIn ?
+                                ((page == 2 ?
+                                    <Container maxWidth="lg" className={classes.container}>
+                                        <Grid container spacing={3}>
+                                            <Grid item xs={12} md={9} lg={12}>
+                                                <Paper style={{ height: "45px", textAlign: "center" }}>
+                                                    <h1>Sports</h1>
+                                                </Paper>
+                                            </Grid>
+                                            <Grid item xs={12} md={9} lg={12}>
+                                                <Paper className={fixedHeightPaper}>
+                                                    {images.map((image) => (
+                                                        <ButtonBase
+                                                            focusRipple
+                                                            key={image.title}
+                                                            className={classes.image}
+                                                            focusVisibleClassName={classes.focusVisible}
+                                                            style={{
+                                                                width: image.width,
+                                                                height: image.height,
+                                                                margin: image.margin,
+                                                            }}
+                                                            onClick={handleHomeButton}
+                                                        >
+                                                            <span
+                                                                className={classes.imageSrc}
+                                                                style={{
+                                                                    backgroundImage: `url(${image.url})`,
+                                                                }}
+                                                            />
+                                                            <span className={classes.imageBackdrop} />
+                                                            <span className={classes.imageButton}>
+                                                                <Typography
+                                                                    component="span"
+                                                                    variant="subtitle1"
+                                                                    color="inherit"
+                                                                    className={classes.imageTitle}
+                                                                >
+                                                                    {image.title}
+                                                                    <span className={classes.imageMarked} />
+                                                                </Typography>
+                                                            </span>
+                                                        </ButtonBase>
+                                                    ))}
+                                                </Paper>
+                                            </Grid>
+                                        </Grid>
+                                    </Container>
                                     :
-                                    <Grid item xs={12}>
-                                        <Paper className={classes.paper}>
-                                            {matchOption == 1 ?
-                                                <BasicInfo cupBasicInfo={cupBasicInfo} />
-                                                :
-                                                (matchOption == 2 ?
-                                                    <Schedule cupSchedule={cupSchedule} />
+                                    (page == 3 ?
+                                        <Container maxWidth="lg" className={classes.container}>
+                                            <Grid container spacing={3}>
+                                                <Grid item xs={12} md={9} lg={12}>
+                                                    <Title>項目</Title>
+                                                    <div className={fixedHeightPaper} style={{ width: "1240px", margin: "auto", marginTop: "100px" }}>
+                                                        {images2.map((image, index) => (
+                                                            <ButtonBase
+                                                                focusRipple
+                                                                key={image.title}
+                                                                className={classes.image}
+                                                                focusVisibleClassName={classes.focusVisible}
+                                                                onClick={() => handleCupNum(index + 1)}
+                                                                style={{
+                                                                    width: image.width,
+                                                                    height: image.height,
+                                                                    margin: image.margin,
+                                                                    //marginTop: image.marginTop,
+                                                                }}
+                                                            >
+                                                                <span
+                                                                    className={classes.imageSrc}
+                                                                    style={{
+                                                                        backgroundImage: `url(${image.url})`,
+                                                                    }}
+                                                                />
+                                                                <span className={classes.imageBackdrop} />
+                                                                <span className={classes.imageButton}>
+                                                                    <Typography
+                                                                        component="span"
+                                                                        variant="subtitle1"
+                                                                        color="inherit"
+                                                                        className={classes.imageTitle}
+                                                                    >
+                                                                        {image.title}
+                                                                        <span className={classes.imageMarked} />
+                                                                    </Typography>
+                                                                </span>
+                                                            </ButtonBase>
+                                                        ))}
+                                                    </div>
+                                                </Grid>
+                                            </Grid>
+                                        </Container>
+                                        :
+                                        <Container maxWidth="lg" className={classes.container}>
+                                            <Grid container spacing={3}>
+                                                {matchOption == 4 ?
+                                                    <Announce cupAnnounce={cupAnnounce} />
                                                     :
-                                                    <GameResult cupResult={cupResult} />
-                                                )
-                                            }
+                                                    <Grid item xs={12}>
+                                                        <Paper className={classes.paper}>
+                                                            {matchOption == 1 ?
+                                                                <BasicInfo cupBasicInfo={cupBasicInfo} />
+                                                                :
+                                                                (matchOption == 2 ?
+                                                                    <Schedule cupSchedule={cupSchedule} />
+                                                                    :
+                                                                    <GameResult cupResult={cupResult} />
+                                                                )
+                                                            }
+                                                        </Paper>
+                                                    </Grid>
+                                                }
+                                            </Grid>
+                                        </Container>)))
+                                :
+                                <Container maxWidth="lg" className={classes.container}>
+                                    <Grid container spacing={3}>
+                                        <Grid item xs={12} md={8} lg={12}>
+                                            <Paper className={fixedHeightPaper}>
+                                                <Grid item xs={12}>
+
+                                                    <Typography component="h1" variant="h5" style={{ textAlign: 'center' }}>
+                                                        Sign in
+                        </Typography>
+                                                    <FormControl className={classes.formControl}>
+
+                                                        <Grid item xs={4} style={{ marginLeft: '400px' }}>
+                                                            <TextField
+                                                                variant="outlined"
+                                                                required
+                                                                fullWidth
+                                                                id="username"
+                                                                label="Username"
+                                                                name="username"
+                                                                autoComplete="username"
+                                                                style={{ height: 80 }}
+                                                                value={username}
+                                                                onInput={e => setUsername(e.target.value)}
+                                                            />
+                                                        </Grid>
+                                                        <Grid item xs={4} style={{ marginLeft: '400px' }}>
+                                                            <TextField
+                                                                variant="outlined"
+                                                                required
+                                                                fullWidth
+                                                                name="password"
+                                                                label="Password"
+                                                                type="password"
+                                                                id="password"
+                                                                autoComplete="current-password"
+                                                                style={{ height: 80 }}
+                                                                value={password}
+                                                                onInput={e => setPassword(e.target.value)}
+                                                            />
+                                                        </Grid>
+                                                        <Grid item xs={4} style={{ marginLeft: '400px' }}>
+                                                            <Button
+                                                                type="submit"
+                                                                fullWidth
+                                                                variant="contained"
+                                                                color="primary"
+                                                                className={classes.submit}
+                                                                onClick={handleLogin}
+                                                            >
+                                                                Log In
+                              </Button>
+                                                        </Grid>
+                                                    </FormControl>
+
+                                                </Grid>
+                                            </Paper>
+                                        </Grid>
+                                    </Grid>
+                                </Container>
+                            :
+                            <Container maxWidth="lg" className={classes.container}>
+                                <Grid container spacing={3}>
+                                    <Grid item xs={12} md={8} lg={12}>
+                                        <Paper className={fixedHeightPaper}>
+                                            <Grid item xs={12}>
+
+                                                <Typography component="h1" variant="h5" style={{ textAlign: 'center' }}>
+                                                    Sign up
+                        </Typography>
+                                                <FormControl className={classes.formControl}>
+                                                    <Grid item xs={4} style={{ marginLeft: '400px' }}>
+                                                        <TextField
+                                                            variant="outlined"
+                                                            required
+                                                            fullWidth
+                                                            id="email"
+                                                            label="Email Address"
+                                                            name="email"
+                                                            autoComplete="email"
+                                                            style={{ height: 80 }}
+                                                            value={signUpEmail}
+                                                            onInput={e => setSignUpEmail(e.target.value)}
+                                                        />
+                                                    </Grid>
+                                                    <Grid item xs={4} style={{ marginLeft: '400px' }}>
+                                                        <TextField
+                                                            variant="outlined"
+                                                            required
+                                                            fullWidth
+                                                            id="username"
+                                                            label="Username"
+                                                            name="username"
+                                                            autoComplete="username"
+                                                            style={{ height: 80 }}
+                                                            value={signUpUsername}
+                                                            onInput={e => setSignUpUsername(e.target.value)}
+
+                                                        />
+                                                    </Grid>
+                                                    <Grid item xs={4} style={{ marginLeft: '400px' }}>
+                                                        <TextField
+                                                            variant="outlined"
+                                                            required
+                                                            fullWidth
+                                                            name="password"
+                                                            label="Password"
+                                                            type="password"
+                                                            id="password"
+                                                            autoComplete="current-password"
+                                                            style={{ height: 80 }}
+                                                            value={signUpPassword}
+                                                            onInput={e => setSignUpPassword(e.target.value)}
+                                                        />
+                                                    </Grid>
+                                                    <Grid item xs={4} style={{ marginLeft: '400px' }}>
+                                                        <Button
+                                                            type="submit"
+                                                            fullWidth
+                                                            variant="contained"
+                                                            color="primary"
+                                                            className={classes.submit}
+                                                            onClick={addUser}
+                                                        >
+                                                            Sign Up
+                              </Button>
+                                                    </Grid>
+                                                </FormControl>
+
+                                            </Grid>
                                         </Paper>
                                     </Grid>
-                                }
-                            </Grid>
-                        </Container>)
-                }
+                                </Grid>
+                            </Container>
+                        }
 
-            </main>
-        </div >
+                    </main>
+                </div >
+            }
+        </React.Fragment>
     );
 }

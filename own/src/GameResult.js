@@ -51,7 +51,7 @@ export default function GameResult(props) {
                         {props.cupResult.map((row) => (
                             <TableRow key={row.date}>
                                 <TableCell component="th" scope="row">
-                                    {row.date}
+                                    {row.date.slice(0, 10)}
                                 </TableCell>
                                 <TableCell align="right">{row.match}</TableCell>
                                 <TableCell align="right">{row.score}</TableCell>

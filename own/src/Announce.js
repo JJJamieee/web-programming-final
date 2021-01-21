@@ -26,7 +26,7 @@ export default function Announce(props) {
                 <Grid item xs={12} md={6} lg={6}>
                     <Paper className={fixedHeightPaper}>
                         <h3>{row.title}</h3>
-                        <p>{row.date}</p>
+                        <p>{row.date.slice(0, 10)}</p>
                         <p>{row.content}</p>
                     </Paper>
                 </Grid>

@@ -3,8 +3,8 @@ import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 
 const ScheduleSchema = Schema({
-  cupID: { type: Number, required: true, unique: true },
-  date: { type: String, required: true }, //日期
+  cupID: { type: Number, required: true },
+  date: { type: Date, required: true }, //日期
   time: { type: String, required: true }, //時間
   match: { type: String, required: true }, //對戰組合
   place: { type: String, required: true }, //地點

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react'
+import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -10,6 +11,11 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import EditGame from './EditGame'
+
+const API_ROOT = 'http://localhost:4000/api'
+const instance = axios.create({
+    baseURL: API_ROOT
+})
 
 const useStyles = makeStyles({
     table: {
@@ -31,12 +37,26 @@ const rows = [
 ];
 
 export default function Schedule(props) {
-    const [gameNum, setGameNum] = useState()
+    const [game, setGame] = useState({})
     const [changePage, setChagePage] = useState(false)
+    const [cupSchedule, setCupSchedule] = useState([])
     const classes = useStyles();
-    const handleEdit = () => {
+    const handleEdit = (gameInstance) => {
         setChagePage(true)
+        setGame(gameInstance)
     }
+
+    const getSchedule = async (id) => {
+        // TODO : get current cup schedule
+        const { data: schedule } = await instance.get('/getSchedule', { params: { id } })
+
+        setCupSchedule(schedule.contents)
+    }
+
+    useEffect(() => {
+        getSchedule(props.cupNum)
+    })
+
     return (
         <div>
             {!changePage ?
@@ -56,16 +76,16 @@ export default function Schedule(props) {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {rows.map((row) => (
+                                {cupSchedule.map((row) => (
                                     <TableRow key={row.date}>
                                         <TableCell component="th" scope="row">
-                                            {row.date}
+                                            {row.date.slice(0, 10)}
                                         </TableCell>
                                         <TableCell align="right">{row.time}</TableCell>
                                         <TableCell align="right">{row.match}</TableCell>
                                         <TableCell align="right">{row.place}</TableCell>
                                         <TableCell align="right">
-                                            <Button type="button" onClick={handleEdit}>編輯</Button>
+                                            <Button type="button" onClick={() => handleEdit(row)}>編輯</Button>
                                         </TableCell>
                                     </TableRow>
                                 ))}
@@ -74,7 +94,7 @@ export default function Schedule(props) {
                     </TableContainer>
                 </React.Fragment>
                 :
-                <EditGame />}
+                <EditGame game={game} cupNum={props.cupNum} />}
         </div>
     );
 }
