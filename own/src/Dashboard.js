@@ -35,9 +35,6 @@ import GameResult from './GameResult'
 import Announce from './Announce'
 import Schedule from './Schedule'
 import Afterlogin from './Afterlogin'
-import SignIn from './LogInF'
-import SignUp from './SignUp'
-import Cups from './Cups'
 
 const API_ROOT = 'http://localhost:4000/api'
 const instance = axios.create({
