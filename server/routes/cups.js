@@ -207,4 +207,5 @@ router.post('/setUserLogout', async (req, res) => {
     res.json({ success: true });
 })
 
-export default router
+// export default router
+module.exports = router
