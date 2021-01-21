@@ -10,6 +10,7 @@ class App extends Component {
 		return (
 			// <BrowserRouter basename="/my-app">
 			<BrowserRouter>
+				<meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'" />
 				<Route path="/" component={Dashboard} >
 					<Route path="/controlPage" component={Afterlogin} />
 				</Route>
