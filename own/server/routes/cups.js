@@ -175,13 +175,13 @@ router.post('/login', async (req, res) => {
     const doesPasswordMatch = bcrypt.compareSync(userInfo.hashedPassword, existingUser.hashPassword); //it wii give you a boolean, so the value of doesPasswordMatch will be a boolean
     console.log(doesPasswordMatch)
     //if the passwords do not match
-    if (!doesPasswordMatch) return res.json({ isLogin: false });
+    // if (!doesPasswordMatch) return res.json({ isLogin: false });
 
     //if the passwords match, send back the existingUser to the frontEND
     // User.updateOne
     // existingUser.isLogin = true;
     // existingUser.save(callback);
-    res.json({ isLogin: true });
+    res.json({ isLogin: doesPasswordMatch });
 })
 
 router.post('/setUserLogout', async (req, res) => {

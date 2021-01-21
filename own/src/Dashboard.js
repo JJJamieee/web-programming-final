@@ -417,7 +417,7 @@ export default function Dashboard() {
             {isLogin ?
                 <Afterlogin logout={(isLogout) => handleLogout(isLogout)} userName={username} />
                 :
-                <div className={classes.root}>
+                (<div className={classes.root}>
                     <CssBaseline />
                     {page != 1 ?
                         <AppBar position="absolute" className={clsx(classes.appBar)}>
@@ -790,7 +790,7 @@ export default function Dashboard() {
                         }
 
                     </main>
-                </div >
+                </div >)
             }
         </React.Fragment>
     );

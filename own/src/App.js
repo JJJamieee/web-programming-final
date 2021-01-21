@@ -3,15 +3,17 @@ import { NavLink, Switch, Route, Redirect } from "react-router-dom";
 import { BrowserRouter } from 'react-router-dom'
 
 import Dashboard from './Dashboard'
-import Signup from './Signup_front'
-import SignIn from './LogInF'
-
+import Afterlogin from './Afterlogin'
 
 class App extends Component {
 	render() {
 		return (
 			// <BrowserRouter basename="/my-app">
 			<BrowserRouter>
+				<Route path="/" component={Dashboard} >
+					<Route path="/controlPage" component={Afterlogin} />
+				</Route>
+
 				<Dashboard />
 			</BrowserRouter>
 		)
