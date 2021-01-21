@@ -4,9 +4,9 @@
 // import Announce from '../models/Announce'
 // import User from '../models/user'
 const express = require('express')
-const Cup = require('../models/Cup')
-const Schedule = require('../models/Schedule')
-const Announce = require('../models/Announce')
+const Cup = require('../models/cup')
+const Schedule = require('../models/schedule')
+const Announce = require('../models/announce')
 const User = require('../models/user')
 const bcrypt = require('bcryptjs')
 
