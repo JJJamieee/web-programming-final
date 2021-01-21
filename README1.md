@@ -23,10 +23,6 @@ Group 51 : NTU Sports
 
 ```
 
-## 其他說明
-
-用MAC瀏覽的話比例比較漂亮。
-
 ## 使用與參考之框架/模組/原始碼
 
 * Frontend : React、Material-UI、react-router-dom
