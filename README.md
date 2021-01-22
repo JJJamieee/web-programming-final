@@ -45,6 +45,6 @@ https://github.com/JJJamieee/web-programming-final
 
 ## Deployed連結
 ```
-
+http://35.194.149.172:3000/
 ```
 
