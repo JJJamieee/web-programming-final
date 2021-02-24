@@ -40,7 +40,7 @@ https://github.com/JJJamieee/web-programming-final
 ## 各組員之貢獻
 * 楊鈞智 : 主要是負責前端的註冊、登入頁面的設計與建立、修改比賽資料的表單呈現，並把表單的內容存下來，另外負責撰寫後端資料庫資料 models 的格式。  
 * 康崴 : 主要負責首頁及其他頁面之設計、後端資料庫連結、登入功能之 bcrypt 套件之應用。
-* 林佳勳 : 主要負責將各個component和container串聯，並與後端資料庫連接，讓整個網站可以順利運行
+* 林佳勳 : 主要負責將各個 component 和 container 串聯，並與後端資料庫連接，讓整個網站可以順利運行
 
 
 ## Deployed連結
