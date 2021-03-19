@@ -2,6 +2,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
+import { NavLink } from 'react-router-dom';
+import { useState, useEffect } from 'react'
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -87,7 +89,32 @@ const useStyles = makeStyles((theme) => ({
 
 function ImageList(props) {
     const classes = useStyles();
+    const [path_list, setPathList] = useState([]);
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight, classes.root);
+    const sports = ['basketball', 'volleyball', 'baseball', 'badminton'];
+
+    const generatePathList = () => {
+        var newPathList = [];
+        if (props.type === 'sports') {
+            sports.map((item, index) => {
+                const path = "/" + item + "/cups";
+                newPathList.push(path);
+            });
+        } else if (props.type === "cups") {
+            const indexList = ['1', '2', '3', '4'];
+            indexList.map(item => {
+                const path = "/basketball/cupPage/" + item;
+                newPathList.push(path);
+            })
+        }
+        setPathList(newPathList);
+    }
+
+    useEffect(() => {
+        generatePathList();
+    },
+        [props.type],
+    );
 
     return (
         <div className={fixedHeightPaper}>
@@ -102,7 +129,7 @@ function ImageList(props) {
                         height: image.height,
                         margin: image.margin,
                     }}
-                // onClick={() => handleHomeButton(index + 1)}
+                    component={NavLink} to={!path_list.length ? generatePathList() : path_list[index]}
                 >
                     <span
                         className={classes.imageSrc}
@@ -123,8 +150,9 @@ function ImageList(props) {
                         </Typography>
                     </span>
                 </ButtonBase>
-            ))}
-        </div>
+            ))
+            }
+        </div >
     )
 }
 

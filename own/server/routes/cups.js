@@ -30,7 +30,6 @@ router.get('/getBasicInfo', async (req, res) => {
     //TODO : use the cupID to get its basic info
     console.log(req.query)
     const basic_info = await Cup.find({ cupID: req.query.id })
-    console.log(basic_info)
     if (!basic_info) {
         const res_obj = {
             message: 'error',
