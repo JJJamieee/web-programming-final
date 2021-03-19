@@ -4,17 +4,21 @@ import { BrowserRouter } from 'react-router-dom'
 
 import Dashboard from './Dashboard'
 import Afterlogin from './Afterlogin'
+import NTUSports from './containers/NTUSports';
 
 class App extends Component {
 	render() {
 		return (
-			// <BrowserRouter basename="/my-app">
-			<BrowserRouter>
-				<Route path="/" component={Dashboard} >
-					<Route path="/controlPage" component={Afterlogin} />
-				</Route>
+			// <BrowserRouter>
+			// 	<Route path="/" component={Dashboard} >
+			// 		<Route path="/controlPage" component={Afterlogin} />
+			// 	</Route>
 
-				<Dashboard />
+			// 	<Dashboard />
+			// </BrowserRouter>
+
+			<BrowserRouter>
+				<NTUSports />
 			</BrowserRouter>
 		)
 	}
