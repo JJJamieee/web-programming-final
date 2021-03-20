@@ -9,6 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
 import Title from './Title';
+import BackToControlButton from './BackToControlButton';
 
 const API_ROOT = 'http://localhost:4000/api'
 const instance = axios.create({
@@ -68,6 +69,7 @@ export default function EditGame(props) {
         <Paper className={fixedHeightPaper}>
             <Grid item xs={12}>
                 <Title>比賽資料</Title>
+                <BackToControlButton cupID={props.cupNum} />
                 <FormControl className={classes.formControl} onSubmit={handleSubmit}>
                     <Grid container spacing={3}>
                         <Grid item xs={12} sm={4} style={{ height: 100 }}>

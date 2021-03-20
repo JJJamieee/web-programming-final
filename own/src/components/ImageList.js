@@ -106,6 +106,18 @@ function ImageList(props) {
                 const path = "/basketball/cupPage/" + item;
                 newPathList.push(path);
             })
+        } else if (props.type === "controlCups") {
+            const indexList = ['1', '2', '3', '4'];
+            indexList.map(item => {
+                const path = "/authed/basketball/cupControl/" + item;
+                newPathList.push(path);
+            })
+        } else if (props.type === "controlPage") {
+            const indexList = ['createGame', 'editGame', 'createAnnounce'];
+            indexList.map(item => {
+                const path = "/authed/basketball/cupControl/" + props.cupID + "/" + item;
+                newPathList.push(path);
+            })
         }
         setPathList(newPathList);
     }

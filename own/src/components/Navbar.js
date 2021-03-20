@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import { Button } from '@material-ui/core';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useHistory } from "react-router-dom";
 import React from 'react';
 import { useEffect, useState } from 'react'
 
@@ -56,17 +56,28 @@ function Navbar(props) {
     const classes = useStyles();
     const location = useLocation();
     const [showDrawerButton, setShowDrawerButton] = useState(false);
+    const [showLogOut, setShowLogOut] = useState(false);
+    const history = useHistory();
 
     const handleDrawerOpen = () => {
         props.handleDrawerButton(true);
     };
 
+    const handleLogOut = () => {
+        props.handleAuthed(false);
+        history.push("/");
+    }
 
     useEffect(() => {
         if (location.pathname.search('cupPage') != -1)
             setShowDrawerButton(true);
         else
             setShowDrawerButton(false);
+
+        if (location.pathname.search('authed') != -1)
+            setShowLogOut(true);
+        else
+            setShowLogOut(false);
     },
         [location.pathname]
     )
@@ -92,20 +103,27 @@ function Navbar(props) {
                     <Button component={NavLink} to="/"
                         color="inherit" className={classes.title}>NTU Sports</Button>
                 </Typography>
-                <Button
+                {!showLogOut ? (<React.Fragment><Button
                     className={classes.margin}
                     color="inherit"
-                // onClick={handleSignUp}
+                    component={NavLink} to="/signup"
                 >
                     Sign Up
                         </Button>
-                <Button
-                    className={classes.margin}
-                    color="inherit"
-                // onClick={handleSignIn}
-                >
-                    Login
-                        </Button>
+                    <Button
+                        className={classes.margin}
+                        color="inherit"
+                        component={NavLink} to="/signin"
+                    >
+                        Sign In
+                        </Button></React.Fragment>) :
+                    <Button
+                        className={classes.margin}
+                        color="inherit"
+                        onClick={handleLogOut}
+                    >
+                        Sign Out
+                        </Button>}
             </Toolbar>
         </AppBar>
     )

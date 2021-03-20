@@ -3,15 +3,14 @@ import { useState, useEffect } from 'react'
 import clsx from 'clsx';
 import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import Link from '@material-ui/core/Link';
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
 import Title from './Title';
 import TextareaAutosize from 'react-textarea-autosize';
+import BackToControlButton from './BackToControlButton';
 
 const API_ROOT = 'http://localhost:4000/api'
 const instance = axios.create({
@@ -77,6 +76,7 @@ export default function AnnounceForm(props) {
     <Paper className={fixedHeightPaper}>
       <Grid item xs={12}>
         <Title>新增公告</Title>
+        <BackToControlButton cupID={props.cupNum} />
         <FormControl className={classes.formControl} onSubmit={handleSubmit}>
           <TextField
             required

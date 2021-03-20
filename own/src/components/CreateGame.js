@@ -1,15 +1,13 @@
 import React from 'react';
 import { useState, useEffect } from 'react'
-import { NavLink, Switch, Route, Redirect } from "react-router-dom";
 import axios from 'axios'
-import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
 import Title from './Title';
-import Afterlogin from './Afterlogin';
+import BackToControlButton from './BackToControlButton';
 
 const API_ROOT = 'http://localhost:4000/api'
 const instance = axios.create({
@@ -25,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CreateGame(props) {
     const classes = useStyles();
-    const [back, setBack] = useState(false)
     const [gameYear, setGameYear] = useState("")
     const [gameMonth, setGameMonth] = useState("")
     const [gameDate, setGameDate] = useState("")
@@ -61,6 +58,7 @@ export default function CreateGame(props) {
     return (
         <Grid item xs={12}>
             <Title>比賽資料</Title>
+            <BackToControlButton cupID={props.cupNum} />
             <FormControl className={classes.formControl} onSubmit={handleSubmit}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={4} style={{ height: 100 }}>

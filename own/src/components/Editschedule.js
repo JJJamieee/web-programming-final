@@ -13,6 +13,7 @@ import Button from '@material-ui/core/Button';
 import EditGame from './EditGame'
 import SortSchedule from './SortSchedule'
 import Typography from '@material-ui/core/Typography';
+import BackToControlButton from './BackToControlButton';
 
 const API_ROOT = 'http://localhost:4000/api'
 const instance = axios.create({
@@ -131,6 +132,7 @@ export default function Schedule(props) {
                             </TableBody>
                         </Table>
                     </TableContainer>
+                    <BackToControlButton cupID={props.cupNum} />
                 </React.Fragment>
                 :
                 <EditGame game={game} cupNum={props.cupNum} backToSchedule={backToSchedule} />}
