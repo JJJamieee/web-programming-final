@@ -25,6 +25,23 @@
 - 使用bcrypt將密碼轉換成hash值再進行儲存或比對
 - 賽程、比賽結果的頁面會將每個比賽按照日期排序再分日顯示
 
+## Demo
+- 訪客瀏覽頁面
+![image](https://github.com/JJJamieee/web-programming-final/blob/refactor/ntusports_demo1.gif)
+
+- 登入
+![image](https://github.com/JJJamieee/web-programming-final/blob/refactor/ntusports_demo2.gif)
+
+- 創建比賽
+![image](https://github.com/JJJamieee/web-programming-final/blob/refactor/ntusports_demo3.gif)
+
+- 管理盃賽
+![image](https://github.com/JJJamieee/web-programming-final/blob/refactor/ntusports_demo4.gif)
+
+- 新增公告
+![image](https://github.com/JJJamieee/web-programming-final/blob/refactor/ntusports_demo5.gif)
+    
+
 ## Reference
 - React.js: https://zh-hant.reactjs.org/
 - react-router-dom: https://reactrouter.com/web/guides/quick-start
